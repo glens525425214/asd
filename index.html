@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~* The Amazing Click-O-Matic 2000 *~</title>
+    <style>
+        :root {
+            --win98-bg: #008080;
+            --win98-silver: #c0c0c0;
+            --win98-navy: #000080;
+            --win98-yellow: #ffff00;
+            --win98-white: #ffffff;
+            --win98-dark-gray: #808080;
+            --win98-black: #000000;
+        }
+
+        body {
+            background-color: var(--win98-bg);
+            margin: 0;
+            padding: 16px;
+            font-family: "MS Sans Serif", "Tahoma", sans-serif;
+            color: var(--win98-black);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Тот самый Marquee */
+        .marquee-container {
+            background: var(--win98-navy);
+            color: var(--win98-yellow);
+            border: 2px ridge #efefef;
+            padding: 4px 0;
+            margin-bottom: 16px;
+            font-family: "Times New Roman", serif;
+            font-size: 14px;
+        }
+
+        /* Ретро-окно */
+        .window {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--win98-silver);
+            border: 2px solid;
+            border-color: #fff #404040 #404040 #fff;
+            box-shadow: inset -1px -1px var(--win98-dark-gray), inset 1px 1px #dfdfdf;
+            padding: 2px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, var(--win98-navy), #1084d0);
+            padding: 3px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .control-btn {
+            background: var(--win98-silver);
+            border: 1px solid #404040;
+            border-color: #fff #404040 #404040 #fff;
+            width: 16px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: black;
+            cursor: default;
+        }
+
+        .content {
+            padding: 12px;
+        }
+
+        h1 {
+            font-family: "Comic Sans MS", "cursive", serif;
+            font-size: 28px;
+            color: #ff00ff;
+            text-shadow: 2px 2px 0 var(--win98-yellow), 4px 4px 0 var(--win98-navy);
+            text-align: center;
+            margin: 8px 0 16px;
+        }
+
+        .panels {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        fieldset {
+            flex: 1 1 300px;
+            border: 2px groove #dfdfdf;
+            padding: 12px;
+            background: var(--win98-silver);
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 4px;
+        }
+
+        /* Стили Win98 для элементов */
+        .sunken {
+            background: var(--win98-white);
+            border: 2px solid;
+            border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+            box-shadow: inset 1px 1px var(--win98-black), inset -1px -1px #dfdfdf;
+            padding: 8px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 4px;
+            font-family: inherit;
+            margin-bottom: 8px;
+            outline: none;
+        }
+
+        .main-btn {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 16px 32px;
+            background: var(--win98-silver);
+            border: 2px solid;
+            border-color: #fff #404040 #404040 #fff;
+            box-shadow: inset -1px -1px var(--win98-dark-gray), inset 1px 1px #dfdfdf;
+            cursor: pointer;
+            width: 100%;
+            margin: 12px 0;
+            font-family: inherit;
+        }
+
+        .main-btn:active {
+            border-color: #404040 #fff #fff #404040;
+            box-shadow: inset 1px 1px var(--win98-dark-gray);
+            padding-top: 17px;
+            padding-bottom: 15px;
+        }
+
+        /* Счетчик */
+        .counter-display {
+            background: #000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            letter-spacing: 4px;
+            border: 2px inset var(--win98-silver);
+        }
+
+        /* Таблица рекордов */
+        .hall-of-fame {
+            background: white;
+            min-height: 200px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th {
+            background: var(--win98-navy);
+            color: white;
+            padding: 4px;
+            text-align: left;
+        }
+
+        td {
+            padding: 4px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        tr:nth-child(even) { background: #f5f5f5; }
+
+        .blink { animation: blinker 1s step-start infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            color: white;
+            font-size: 11px;
+            padding: 16px;
+            background: rgba(0,0,0,0.2);
+            border: 1px dashed white;
+        }
+
+        .error-text { color: red; font-weight: bold; display: none; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <marquee scrollamount="6">
+            ★★★ WELCOME TO THE CLICK COUNTER 2000 ★★★ BEST VIEWED IN NETSCAPE NAVIGATOR 4.0 OR INTERNET EXPLORER 5.0 AT 800x600 ★★★ SIGN MY GUESTBOOK!!! ★★★
+        </marquee>
+    </div>
+
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <span>📟</span> CLICK_COUNTER.EXE
+            </div>
+            <div class="title-bar-controls">
+                <div class="control-btn">_</div>
+                <div class="control-btn">□</div>
+                <div class="control-btn">×</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h1>~* The Amazing Click-O-Matic *~</h1>
+            
+            <div class="panels">
+                <!-- Консоль игрока -->
+                <fieldset>
+                    <legend>Player Console</legend>
+                    <label>Enter your nickname:</label>
+                    <input type="text" id="nickname" class="sunken" maxlength="15" placeholder="GuestPlayer">
+                    <div id="error" class="error-text">⚠ Please enter a nickname!</div>
+                    
+                    <button class="main-btn" onclick="handleClick()">>> CLICK ME! <<</button>
+                    
+                    <div class="sunken" style="margin-top: 10px;">
+                        <div style="font-size: 10px; color: #000080; text-align: center; margin-bottom: 4px;">TOTAL CLICKS COUNTER</div>
+                        <div id="total-display" class="counter-display">00000000</div>
+                    </div>
+                </fieldset>
+
+                <!-- Таблица рекордов -->
+                <fieldset>
+                    <legend>🏆 Hall of Fame - TOP 20</legend>
+                    <div class="sunken hall-of-fame">
+                        <table id="leaderboard">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nickname</th>
+                                    <th style="text-align: right;">Clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Сюда добавятся рекорды -->
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div style="margin-bottom: 8px;">
+            <span class="blink" style="color: yellow; font-weight: bold;">NEW!!!</span> 
+            This page has been visited <span id="visit-counter" style="background: black; color: #00ff00; padding: 0 4px;">000000</span> times
+        </div>
+        <div>© 1999 ClickCounter Industries · Made with Notepad · Best on 56k modem 📞</div>
+    </div>
+
+    <script>
+        // Инициализация данных из localStorage
+        let stats = JSON.parse(localStorage.getItem('clicker_stats')) || {
+            total: 0,
+            users: {}
+        };
+
+        function save() {
+            localStorage.setItem('clicker_stats', JSON.stringify(stats));
+            updateUI();
+        }
+
+        function updateUI() {
+            // Обновляем главный счетчик
+            document.getElementById('total-display').innerText = stats.total.toString().padStart(8, '0');
+            document.getElementById('visit-counter').innerText = stats.total.toString().padStart(6, '0');
+            
+            // Обновляем таблицу лидеров
+            const tbody = document.querySelector('#leaderboard tbody');
+            tbody.innerHTML = '';
+            
+            const sortedUsers = Object.entries(stats.users)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 20);
+            
+            if (sortedUsers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 20px; color: #808080;">No clickers yet... Be the first!</td></tr>';
+            } else {
+                sortedUsers.forEach(([name, count], index) => {
+                    const tr = document.createElement('tr');
+                    const isTop = index < 3;
+                    tr.style.fontWeight = isTop ? 'bold' : 'normal';
+                    if (index === 0) tr.style.color = '#c00000';
+                    
+                    tr.innerHTML = `
+                        <td>${index === 0 ? '👑' : index + 1}</td>
+                        <td>${name}</td>
+                        <td style="text-align: right; font-family: 'Courier New', monospace;">${count}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function handleClick() {
+            const nickInput = document.getElementById('nickname');
+            const error = document.getElementById('error');
+            const name = nickInput.value.trim();
+
+            if (!name) {
+                error.style.display = 'block';
+                nickInput.style.borderColor = 'red';
+                return;
+            }
+
+            error.style.display = 'none';
+            nickInput.style.borderColor = '';
+
+            // Увеличиваем счетчик
+            stats.total++;
+            stats.users[name] = (stats.users[name] || 0) + 1;
+            
+            save();
+        }
+
+        // Первичная отрисовка
+        updateUI();
+
+        // Обработка Enter в поле ника
+        document.getElementById('nickname').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleClick();
+        });
+    </script>
+</body>
+</html>
