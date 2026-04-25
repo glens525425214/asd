@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>~* The Amazing Click-O-Matic 2000 *~</title>
+    <title>~* Удивительный Кликатор 2000 *~</title>
+    <!-- Подключаем Firebase для реального времени -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
         :root {
             --win98-bg: #008080;
@@ -27,7 +31,6 @@
             overflow-x: hidden;
         }
 
-        /* Тот самый Marquee */
         .marquee-container {
             background: var(--win98-navy);
             color: var(--win98-yellow);
@@ -38,7 +41,6 @@
             font-size: 14px;
         }
 
-        /* Ретро-окно */
         .window {
             max-width: 800px;
             margin: 0 auto;
@@ -62,17 +64,8 @@
             font-size: 13px;
         }
 
-        .title-bar-text {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .title-bar-controls {
-            display: flex;
-            gap: 2px;
-        }
-
+        .title-bar-text { display: flex; align-items: center; gap: 5px; }
+        .title-bar-controls { display: flex; gap: 2px; }
         .control-btn {
             background: var(--win98-silver);
             border: 1px solid #404040;
@@ -84,12 +77,9 @@
             justify-content: center;
             font-size: 10px;
             color: black;
-            cursor: default;
         }
 
-        .content {
-            padding: 12px;
-        }
+        .content { padding: 12px; }
 
         h1 {
             font-family: "Comic Sans MS", "cursive", serif;
@@ -100,11 +90,7 @@
             margin: 8px 0 16px;
         }
 
-        .panels {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
+        .panels { display: flex; gap: 16px; flex-wrap: wrap; }
 
         fieldset {
             flex: 1 1 300px;
@@ -113,12 +99,8 @@
             background: var(--win98-silver);
         }
 
-        legend {
-            font-weight: bold;
-            padding: 0 4px;
-        }
+        legend { font-weight: bold; padding: 0 4px; }
 
-        /* Стили Win98 для элементов */
         .sunken {
             background: var(--win98-white);
             border: 2px solid;
@@ -127,14 +109,7 @@
             padding: 8px;
         }
 
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 4px;
-            font-family: inherit;
-            margin-bottom: 8px;
-            outline: none;
-        }
+        input { width: 100%; box-sizing: border-box; padding: 4px; font-family: inherit; margin-bottom: 8px; outline: none; }
 
         .main-btn {
             font-size: 18px;
@@ -153,11 +128,9 @@
         .main-btn:active {
             border-color: #404040 #fff #fff #404040;
             box-shadow: inset 1px 1px var(--win98-dark-gray);
-            padding-top: 17px;
-            padding-bottom: 15px;
+            padding-top: 17px; padding-bottom: 15px;
         }
 
-        /* Счетчик */
         .counter-display {
             background: #000;
             color: #00ff00;
@@ -170,31 +143,10 @@
             border: 2px inset var(--win98-silver);
         }
 
-        /* Таблица рекордов */
-        .hall-of-fame {
-            background: white;
-            min-height: 200px;
-            overflow-y: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        th {
-            background: var(--win98-navy);
-            color: white;
-            padding: 4px;
-            text-align: left;
-        }
-
-        td {
-            padding: 4px;
-            border-bottom: 1px solid #efefef;
-        }
-
+        .hall-of-fame { background: white; min-height: 200px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: var(--win98-navy); color: white; padding: 4px; text-align: left; }
+        td { padding: 4px; border-bottom: 1px solid #efefef; }
         tr:nth-child(even) { background: #f5f5f5; }
 
         .blink { animation: blinker 1s step-start infinite; }
@@ -217,7 +169,7 @@
 
     <div class="marquee-container">
         <marquee scrollamount="6">
-            ★★★ WELCOME TO THE CLICK COUNTER 2000 ★★★ BEST VIEWED IN NETSCAPE NAVIGATOR 4.0 OR INTERNET EXPLORER 5.0 AT 800x600 ★★★ SIGN MY GUESTBOOK!!! ★★★
+            ★★★ ДОБРО ПОЖАЛОВАТЬ В КЛИКЕР 2000 ★★★ ЛУЧШЕ ВСЕГО СМОТРИТСЯ В NETSCAPE NAVIGATOR 4.0 ★★★ ОСТАВЬТЕ ЗАПИСЬ В ГОСТЕВОЙ КНИГЕ!!! ★★★
         </marquee>
     </div>
 
@@ -234,38 +186,36 @@
         </div>
         
         <div class="content">
-            <h1>~* The Amazing Click-O-Matic *~</h1>
+            <h1>~* Удивительный Кликатор *~</h1>
             
             <div class="panels">
-                <!-- Консоль игрока -->
                 <fieldset>
-                    <legend>Player Console</legend>
-                    <label>Enter your nickname:</label>
-                    <input type="text" id="nickname" class="sunken" maxlength="15" placeholder="GuestPlayer">
-                    <div id="error" class="error-text">⚠ Please enter a nickname!</div>
+                    <legend>Консоль игрока</legend>
+                    <label>Введите ваш никнейм:</label>
+                    <input type="text" id="nickname" class="sunken" maxlength="15" placeholder="Гость">
+                    <div id="error" class="error-text">⚠ Пожалуйста, введите никнейм!</div>
                     
-                    <button class="main-btn" onclick="handleClick()">>> CLICK ME! <<</button>
+                    <button class="main-btn" id="clickBtn">>> КЛИКНИ МЕНЯ! <<</button>
                     
                     <div class="sunken" style="margin-top: 10px;">
-                        <div style="font-size: 10px; color: #000080; text-align: center; margin-bottom: 4px;">TOTAL CLICKS COUNTER</div>
+                        <div style="font-size: 10px; color: #000080; text-align: center; margin-bottom: 4px;">ОБЩИЙ СЧЕТЧИК КЛИКОВ</div>
                         <div id="total-display" class="counter-display">00000000</div>
                     </div>
                 </fieldset>
 
-                <!-- Таблица рекордов -->
                 <fieldset>
-                    <legend>🏆 Hall of Fame - TOP 20</legend>
+                    <legend>🏆 Зал Славы (Все игроки)</legend>
                     <div class="sunken hall-of-fame">
                         <table id="leaderboard">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nickname</th>
-                                    <th style="text-align: right;">Clicks</th>
+                                    <th>Никнейм</th>
+                                    <th style="text-align: right;">Клики</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Сюда добавятся рекорды -->
+                                <tr><td colspan="3" style="text-align:center; padding: 20px;">Загрузка данных...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -274,86 +224,80 @@
         </div>
     </div>
 
-    <div class="footer">
+    <div class="footer" id="footer">
         <div style="margin-bottom: 8px;">
-            <span class="blink" style="color: yellow; font-weight: bold;">NEW!!!</span> 
-            This page has been visited <span id="visit-counter" style="background: black; color: #00ff00; padding: 0 4px;">000000</span> times
+            <span class="blink" style="color: yellow; font-weight: bold;">НОВИНКА!!!</span> 
+            Эту страницу посетили уже <span id="visit-counter" style="background: black; color: #00ff00; padding: 0 4px;">000000</span> раз(а)!
         </div>
-        <div>© 1999 ClickCounter Industries · Made with Notepad · Best on 56k modem 📞</div>
+        <div>© 2026 ClickCounter Global · Сделано с любовью в Блокноте · Оптимизировано для модема 56k 📞</div>
     </div>
 
     <script>
-        // Инициализация данных из localStorage
-        let stats = JSON.parse(localStorage.getItem('clicker_stats')) || {
-            total: 0,
-            users: {}
+        // Конфигурация Firebase (Публичная БД для тестов)
+        // ВАЖНО: Для долгой работы рекомендуется создать свой проект в Firebase
+        const firebaseConfig = {
+            databaseURL: "https://clicker-2000-default-rtdb.europe-west1.firebasedatabase.app/"
         };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        function save() {
-            localStorage.setItem('clicker_stats', JSON.stringify(stats));
-            updateUI();
-        }
+        function updateUI(stats) {
+            if (!stats) return;
+            const total = stats.total || 0;
+            const users = stats.users || {};
 
-        function updateUI() {
-            // Обновляем главный счетчик
-            document.getElementById('total-display').innerText = stats.total.toString().padStart(8, '0');
-            document.getElementById('visit-counter').innerText = stats.total.toString().padStart(6, '0');
+            document.getElementById('total-display').innerText = total.toString().padStart(8, '0');
+            document.getElementById('visit-counter').innerText = total.toString().padStart(6, '0');
             
-            // Обновляем таблицу лидеров
             const tbody = document.querySelector('#leaderboard tbody');
             tbody.innerHTML = '';
             
-            const sortedUsers = Object.entries(stats.users)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 20);
+            const sortedUsers = Object.entries(users)
+                .sort(([,a], [,b]) => b - a);
             
             if (sortedUsers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 20px; color: #808080;">No clickers yet... Be the first!</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 20px;">Пока никто не кликал... Будь первым!</td></tr>';
             } else {
                 sortedUsers.forEach(([name, count], index) => {
                     const tr = document.createElement('tr');
                     const isTop = index < 3;
                     tr.style.fontWeight = isTop ? 'bold' : 'normal';
                     if (index === 0) tr.style.color = '#c00000';
-                    
-                    tr.innerHTML = `
-                        <td>${index === 0 ? '👑' : index + 1}</td>
-                        <td>${name}</td>
-                        <td style="text-align: right; font-family: 'Courier New', monospace;">${count}</td>
-                    `;
+                    tr.innerHTML = `<td>${index === 0 ? '👑' : index + 1}</td><td>${name}</td><td style="text-align: right;">${count}</td>`;
                     tbody.appendChild(tr);
                 });
             }
         }
 
-        function handleClick() {
+        // Слушаем изменения в реальном времени
+        db.ref('stats').on('value', (snapshot) => {
+            updateUI(snapshot.val());
+        });
+
+        async function handleClick() {
             const nickInput = document.getElementById('nickname');
-            const error = document.getElementById('error');
             const name = nickInput.value.trim();
 
             if (!name) {
-                error.style.display = 'block';
-                nickInput.style.borderColor = 'red';
+                document.getElementById('error').style.display = 'block';
                 return;
             }
+            document.getElementById('error').style.display = 'none';
 
-            error.style.display = 'none';
-            nickInput.style.borderColor = '';
-
-            // Увеличиваем счетчик
-            stats.total++;
-            stats.users[name] = (stats.users[name] || 0) + 1;
-            
-            save();
+            // Атомарное обновление в базе данных
+            const statsRef = db.ref('stats');
+            statsRef.transaction((currentData) => {
+                if (currentData === null) {
+                    currentData = { total: 0, users: {} };
+                }
+                currentData.total++;
+                currentData.users[name] = (currentData.users[name] || 0) + 1;
+                return currentData;
+            });
         }
 
-        // Первичная отрисовка
-        updateUI();
-
-        // Обработка Enter в поле ника
-        document.getElementById('nickname').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleClick();
-        });
+        document.getElementById('clickBtn').addEventListener('click', handleClick);
+        document.getElementById('nickname').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleClick(); });
     </script>
 </body>
 </html>
